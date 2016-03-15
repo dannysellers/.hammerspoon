@@ -1,6 +1,12 @@
 -- Window movement
--- Left = 0
-hs.hotkey.bind({'cmd', 'alt', 'ctrl'}, 'Left', function()
+
+local mash = {'cmd', 'alt'}
+local mashrow = {'cmd', 'alt', 'ctrl'}
+local mashshift = {'cmd', 'alt', 'shift'}
+local mashall = {'cmd', 'alt', 'ctrl', 'shift'}
+
+-- Left = 0; width = 1/2 vw
+hs.hotkey.bind(mashrow, 'Left', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -11,8 +17,8 @@ hs.hotkey.bind({'cmd', 'alt', 'ctrl'}, 'Left', function()
 	win:setFrame(f)
 end)
 
--- Left = 1/2 vw
-hs.hotkey.bind({'cmd', 'alt', 'ctrl'}, 'Right', function()
+-- Left = 1/2 vw; width = 1/2 vw
+hs.hotkey.bind(mashrow, 'Right', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -24,7 +30,7 @@ hs.hotkey.bind({'cmd', 'alt', 'ctrl'}, 'Right', function()
 end)
 
 -- Top = 0; height = 1/2 vh
-hs.hotkey.bind({'cmd', 'alt', 'ctrl'}, 'Up', function()
+hs.hotkey.bind(mashrow, 'Up', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -36,7 +42,7 @@ hs.hotkey.bind({'cmd', 'alt', 'ctrl'}, 'Up', function()
 end)
 
 -- Top = 1/2 vw; height = 1/2 vh;
-hs.hotkey.bind({'cmd', 'alt', 'ctrl'}, 'Down', function()
+hs.hotkey.bind(mashrow, 'Down', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -47,10 +53,9 @@ hs.hotkey.bind({'cmd', 'alt', 'ctrl'}, 'Down', function()
 	win:setFrame(f)
 end)
 
--- --------------------------------------
-
--- Move top upwards 1/8 screen
-hs.hotkey.bind({'cmd', 'alt', 'shift'}, 'Up', function()
+-- Translate
+-- Top -= 1/8 vh
+hs.hotkey.bind(mashshift, 'Up', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -62,8 +67,8 @@ hs.hotkey.bind({'cmd', 'alt', 'shift'}, 'Up', function()
 	win:setFrame(f)
 end)
 
--- Move top downards 1/8 screen
-hs.hotkey.bind({'cmd', 'alt', 'shift'}, 'Down', function()
+-- Top += 1/8 vh
+hs.hotkey.bind(mashshift, 'Down', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -75,8 +80,8 @@ hs.hotkey.bind({'cmd', 'alt', 'shift'}, 'Down', function()
 	win:setFrame(f)
 end)
 
--- Move bottom upwards 1/8 screen
-hs.hotkey.bind({'cmd', 'alt'}, 'Up', function()
+-- Bottom -= 1/8 vh
+hs.hotkey.bind(mash, 'Up', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -87,8 +92,8 @@ hs.hotkey.bind({'cmd', 'alt'}, 'Up', function()
 	win:setFrame(f)
 end)
 
--- Move bottom downwards 1/8 screen
-hs.hotkey.bind({'cmd', 'alt'}, 'Down', function()
+-- Bottom += 1/8 vh
+hs.hotkey.bind(mash, 'Down', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -99,8 +104,8 @@ hs.hotkey.bind({'cmd', 'alt'}, 'Down', function()
 	win:setFrame(f)
 end)
 
--- Move right leftwards 1/8 screen
-hs.hotkey.bind({'cmd', 'alt'}, 'Left', function()
+-- Right -= 1/8 vw
+hs.hotkey.bind(mash, 'Left', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -111,8 +116,8 @@ hs.hotkey.bind({'cmd', 'alt'}, 'Left', function()
 	win:setFrame(f)
 end)
 
--- Move right rightwards 1/8 screen
-hs.hotkey.bind({'cmd', 'alt'}, 'Right', function()
+-- Right += 1/8 vw
+hs.hotkey.bind(mash, 'Right', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -123,8 +128,8 @@ hs.hotkey.bind({'cmd', 'alt'}, 'Right', function()
 	win:setFrame(f)
 end)
 
--- Move left leftwards 1/8 screen
-hs.hotkey.bind({'cmd', 'alt', 'shift'}, 'Left', function()
+-- Left -= 1/8 vw
+hs.hotkey.bind(mashshift, 'Left', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -136,8 +141,8 @@ hs.hotkey.bind({'cmd', 'alt', 'shift'}, 'Left', function()
 	win:setFrame(f)
 end)
 
--- Move left rightwards 1/8 screen
-hs.hotkey.bind({'cmd', 'alt', 'shift'}, 'Right', function()
+-- Left += 1/8 vw
+hs.hotkey.bind(mashshift, 'Right', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -150,7 +155,7 @@ hs.hotkey.bind({'cmd', 'alt', 'shift'}, 'Right', function()
 end)
 
 -- Full screen
-hs.hotkey.bind({'shift', 'cmd', 'alt', 'ctrl'}, 'Up', function()
+hs.hotkey.bind(mashall, 'Up', function()
 	local win = hs.window.focusedWindow()
 	local f = win:frame()
 	local screen = win:screen()
@@ -163,8 +168,37 @@ hs.hotkey.bind({'shift', 'cmd', 'alt', 'ctrl'}, 'Up', function()
 	win:setFrame(f)
 end)
 
+local homeSSID = "our house" -- home WiFi SSID
+
+function onHomeWifi()
+	currentSSID = hs.wifi.currentNetwork()
+	return currentSSID == homeSSID
+end
+
+local lastNumberOfScreens = #hs.screen.allScreens()
+
+function screenWatchCallback()
+	newNumberOfScreens = #hs.screen.allScreens()
+
+	if lastNumberOfScreens ~= newNumberOfScreens and newNumberOfScreens == 2 and onHomeWifi() == true then
+		hs.alert.show('Enabling bluetooth...')
+		output, status, type, rc = hs.execute('blueutil power 1', true)
+	else
+		hs.alert.show('Disabling bluetooth...')
+		output, status, type, rc = hs.execute('blueutil power 0', true)
+	end
+
+	lastNumberOfScreens = newNumberOfScreens
+	if rc ~= 0 then
+		hs.alert.show('Error toggling bluetooth: '..(exit))
+	end
+end
+
+screenWatcher = hs.screen.watcher.new(screenWatchCallback)
+screenWatcher:start()
+
 -- Reload Hammerspoon config
-hs.hotkey.bind({'cmd', 'alt', 'ctrl', 'shift'}, 'R', function()
+hs.hotkey.bind(mashall, 'R', function()
 	hs.reload()
 end)
 hs.alert.show("Config loaded")
