@@ -168,6 +168,18 @@ hs.hotkey.bind(mashall, 'Up', function()
 	win:setFrame(f)
 end)
 
+-- Move window 1 screen left (West)
+hs.hotkey.bind(mashall, 'Left', function()
+	local win = hs.window.focusedWindow()
+	win:moveOneScreenWest()
+end)
+
+-- Move window 1 screen right (East)
+hs.hotkey.bind(mashall, 'Right', function()
+	local win = hs.window.focusedWindow()
+	win:moveOneScreenEast()
+end)
+
 local homeSSID = "our house" -- home WiFi SSID
 
 function onHomeWifi()
@@ -183,13 +195,17 @@ function screenWatchCallback()
 	if lastNumberOfScreens ~= newNumberOfScreens and newNumberOfScreens == 2 and onHomeWifi() == true then
 		hs.alert.show('Enabling bluetooth...')
 		output, status, type, rc = hs.execute('blueutil power 1', true)
-	else
-		hs.alert.show('Disabling bluetooth...')
+	elseif onHomeWifi() == false then
 		output, status, type, rc = hs.execute('blueutil power 0', true)
+		-- if output ~= 0 then
+		--	hs.alert.show('Disabling bluetooth...')
+		-- end
+	else
+		-- preserve state
 	end
 
 	lastNumberOfScreens = newNumberOfScreens
-	if rc ~= 0 then
+	if rc and exit and rc ~= 0 then
 		hs.alert.show('Error toggling bluetooth: '..(exit))
 	end
 end
@@ -202,3 +218,26 @@ hs.hotkey.bind(mashall, 'R', function()
 	hs.reload()
 end)
 hs.alert.show("Config loaded")
+
+-- Restart Jitouch
+-- bind close once listener to System Preferences, which opens with Jitouch
+function sysPrefCallback(app_name, e_type, app)
+	if e_type == hs.application.watcher.launching or e_type == hs.application.watcher.launched then
+		hs.execute('killall System Preferences', true)
+		hs.alert.show('Jitouch restarted')
+	end
+	-- close System Preferences
+	if sysPrefWatcher then
+		sysPrefWatcher:stop()
+	end
+end
+sysPrefWatcher = hs.application.watcher.new(sysPrefCallback)
+
+hs.hotkey.bind(mashall, 'J', function()
+	sysPrefWatcher:start()
+	hs.execute('killall Jitouch', true)
+	hs.execute('open /Library/PreferencePanes/Jitouch.prefpane/', true)
+	-- hs.execute('killall System Preferences', true)
+	-- hs.alert.show('Jitouch restarted')
+end)
+
