@@ -88,7 +88,7 @@ hs.hotkey.bind(mash, 'Up', function()
 	local max = screen:frame()
 
 	local dh = max.h / 8
-	f.h = f.h - dh	
+	f.h = f.h - dh
 	win:setFrame(f)
 end)
 
@@ -137,7 +137,7 @@ hs.hotkey.bind(mashshift, 'Left', function()
 
 	local dw = max.w / 8
 	f.x = f.x - dw
-	f.w = f.w + dw	
+	f.w = f.w + dw
 	win:setFrame(f)
 end)
 
@@ -169,16 +169,63 @@ hs.hotkey.bind(mashall, 'Up', function()
 end)
 
 -- Move window 1 screen left (West)
-hs.hotkey.bind(mashall, 'Left', function()
-	local win = hs.window.focusedWindow()
-	win:moveOneScreenWest()
-end)
+-- hs.hotkey.bind(mashall, 'Left', function()
+	-- local win = hs.window.focusedWindow()
+	-- win:moveOneScreenWest()
+-- end)
 
 -- Move window 1 screen right (East)
+-- hs.hotkey.bind(mashall, 'Right', function()
+	-- local win = hs.window.focusedWindow()
+	-- win:moveOneScreenEast()
+-- end)
+
+-- Fully occupy left half of screen
+hs.hotkey.bind(mashall, 'Left', function()
+	local win = hs.window.focusedWindow()
+	local f = win:frame()
+	-- local screen = win:mainScreen()
+	local screen = hs.screen.mainScreen()
+	local max = screen:frame()
+
+	f.y = 0
+	f.w = max.w / 2
+	f.h = max.h
+	f.x = 0
+	win:setFrame(f)
+end)
+
+-- Fully occupy right half of screen
 hs.hotkey.bind(mashall, 'Right', function()
 	local win = hs.window.focusedWindow()
-	win:moveOneScreenEast()
+	local f = win:frame()
+	-- local screen = win:mainScreen()
+	local screen = hs.screen.mainScreen()
+	local max = screen:frame()
+
+	f.y = max.y
+	f.w = max.w / 2
+	f.h = max.h
+	f.x = max.w / 2
+	win:setFrame(f)
 end)
+
+-- Open Finder
+hs.hotkey.bind(mashall, 'F', function()
+	hs.application.launchOrFocus('Finder')
+end)
+
+-- Toggle bluetooth power
+-- hs.hotkey.bind(mashall, 'b', function()
+-- 	output, status, type, rc = hs.execute('blueutil | grep -c Power', true)
+-- 	if output == '1' then
+-- 		hs.alert.show('Enabling bluetooth...')
+-- 		output, status, type, rc = hs.execute('blueutil power 0', true)
+-- 	else
+-- 		hs.alert.show('Disabling bluetooth...')
+-- 		output, status, type, rc = hs.execute('blueutil power 1', true)
+-- 	end
+-- end)
 
 local homeSSID = "our house" -- home WiFi SSID
 
@@ -192,11 +239,11 @@ local lastNumberOfScreens = #hs.screen.allScreens()
 function screenWatchCallback()
 	newNumberOfScreens = #hs.screen.allScreens()
 
-	if lastNumberOfScreens ~= newNumberOfScreens and newNumberOfScreens == 2 and onHomeWifi() == true then
+	if lastNumberOfScreens ~= newNumberOfScreens and newNumberOfScreens > 1 and onHomeWifi() == true then
 		hs.alert.show('Enabling bluetooth...')
 		output, status, type, rc = hs.execute('blueutil power 1', true)
 	elseif onHomeWifi() == false then
-		output, status, type, rc = hs.execute('blueutil power 0', true)
+		-- output, status, type, rc = hs.execute('blueutil power 0', true)
 		-- if output ~= 0 then
 		--	hs.alert.show('Disabling bluetooth...')
 		-- end
@@ -234,9 +281,11 @@ end
 sysPrefWatcher = hs.application.watcher.new(sysPrefCallback)
 
 hs.hotkey.bind(mashall, 'J', function()
-	sysPrefWatcher:start()
-	hs.execute('killall Jitouch', true)
-	hs.execute('open /Library/PreferencePanes/Jitouch.prefpane/', true)
+	-- sysPrefWatcher:start()
+	-- hs.execute('killall Jitouch', true)
+	-- hs.execute('open /Library/PreferencePanes/Jitouch.prefpane/', true)
+	hs.execute('~/.jitouch-restarter.sh', true)
+	hs.alert.show('Jitouch restarted')
 	-- hs.execute('killall System Preferences', true)
 	-- hs.alert.show('Jitouch restarted')
 end)
